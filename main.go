@@ -31,14 +31,20 @@ func WelcomeMessage() {
 }
 
 type ExamOutput interface {
-	ExamName() string
-	ExamDate() string
+	PrintName() string
+	PrintDate() string
+	PrintPages() int
+	PrintDaysOff() int
+	PrintRevisionDays() int
 	ExamDetails() (string, string)
 }
 
 type ExamDetails struct {
-	Name string
-	Date string
+	Name         string
+	Pages        int
+	Date         string
+	DaysOff      int
+	RevisionDays int
 }
 
 func (eD *ExamDetails) UserInput() {
@@ -46,27 +52,64 @@ func (eD *ExamDetails) UserInput() {
 
 	fmt.Println("Please enter the name of your exam: ")
 	fmt.Scanln(&eD.Name)
+
+	fmt.Println("Please enter the number of pages you need to go through: ")
+	fmt.Scanln(&eD.Pages)
+
 	fmt.Println("Please enter the date of the exam. (E.g. 2017-04-14): ")
 	fmt.Scanln(&eD.Date)
+
+	fmt.Println("How many days off can you afford?")
+	fmt.Scanln(&eD.DaysOff)
+
+	fmt.Println("How many days do you need for revision? (0 if none)")
+	fmt.Scanln(&eD.RevisionDays)
 }
 
-func (eD ExamDetails) ExamName() string {
+func (eD ExamDetails) PrintName() string {
 	// Returns name of the exam
-
 	return eD.Name
 }
 
-func (eD ExamDetails) ExamDate() string {
+func (eD ExamDetails) PrintDate() string {
 	// Returns the date of the exam
-
 	return eD.Date
+}
+
+func (eD ExamDetails) PrintPages() int {
+	// Returns the date of the exam
+	return eD.Pages
+}
+
+func (eD ExamDetails) PrintDaysOff() int {
+	// Returns the date of the exam
+	return eD.DaysOff
+}
+
+func (eD ExamDetails) PrintRevisionDays() int {
+	// Returns the date of the exam
+	return eD.RevisionDays
 }
 
 func (eD ExamDetails) ExamDetails() string {
 	// Returns all the information about the exam
+	s := fmt.Sprint("Exam: ", eD.Name, "\n", "Pages: ", eD.Pages, "\n", "Date: ", eD.Date, "\n", "Days for revision: ", eD.RevisionDays, "\n", "Days off: ", eD.DaysOff, "\n")
 
-	s := eD.Name + " " + eD.Date
 	return s
+
+}
+
+func CalculateNumOfPagesPerDay() {
+	// Take in date today
+	// Take in date of exam
+	// Take in # of pages
+	// Subtract exam - today = daysToExam
+	// daysToExam - (DaysOff + RevisionDays) = daysToStudy
+	// Divide: pages/daysToStudy
+}
+
+func CalculateNumOfPagesRevision() {
+	// pages/RevisionDays
 }
 
 func main() {
@@ -77,9 +120,9 @@ func main() {
 
 	exam.UserInput()
 
-	fmt.Printf("Name of the exam is %s and the date is %s.\nHere is the full exam detail: %s", exam.ExamName(), exam.ExamDate(), exam.ExamDetails())
+	fmt.Printf("Summary: \n%s", exam.ExamDetails())
 
-	// logrus.Info("Name of the exam is %s and the date is %s.\nHere is the full exam detail: %s", exam.ExamName(), exam.ExamDate(), exam.ExamDetails())
+	// logrus.Info("Name of the exam is %s and the date is %s.\nHere is the full exam detail: %s", exam.Name(), exam.Date(), exam.ExamDetails())
 
 	//fmt.Printf("Name of exam is %s and the date is %s\n", exam.Name, exam.Date)
 }
